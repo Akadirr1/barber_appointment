@@ -13,8 +13,8 @@ const db = mysql.createConnection(
 	{
 		host: 'localhost',
 		user: 'root',
-		password: '',
-		database: 'kullanici_sistemi'
+		password: 'f9y7z5x1',
+		database: 'kullanici'
 	}
 )
 
@@ -48,24 +48,25 @@ app.post('/login',(req,res)=>{
 })
 app.post('/book',(req,res)=>{
 	const {bookservice,bookdate,booktime} = req.body;
-	const sql = 'INSERT INTO appointments (service,date,time) VALUES (?,?,?)';
-	const isfill= 'SELECT fill FROM appointments WHERE date = ? AND time = ?';
-	db.query(isfill,[bookdate,booktime],(err,results)=>{
-		if(results === 1)
-			return res.status(500).send('Randevu oluşturulamadı.Bu saat dolu!');
+	const sql = 'INSERT INTO appointments (service,date,time,is_fill) VALUES (?,?,?,?)';
+	const checkapp= 'SELECT * FROM appointments WHERE date = (?) AND time = (?)';
+	db.query(checkapp,[bookdate,booktime],(err, results)=>{			
+		console.log(results[0]);
+		if(err)
+			return res.status(500).send('Veritabanı hatası oluştu.');
+		if(results.length > 0 && results[0].is_fill === 1){
+			return res.send('Bu saatte randevu dolu.');
+		}
 		else{
-			db.query(sql,[bookservice,bookdate,booktime],(err,results)=>{
-				if(err || results.length===0)
+			db.query(sql,[bookservice,bookdate,booktime,1],(err,results)=>{
+				if(err)
 					return res.status(500).send('Randevu oluşturulamadı.');
-				db.query('INSERT INTO appointments (fill) VALUES (?)',[1]);
 				res.send('Randevu Başarı ile oluşturuldu.');
 
 			})
 		}
 	})
-	
-	console.log("bookthat");
-})
+	})
 app.listen(port, () => {
 	console.log(`sunucu ${port} üzerinde çalışıyor.`);
 });

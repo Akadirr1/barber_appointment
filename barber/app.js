@@ -37,7 +37,9 @@ document.getElementById('bookbtn').addEventListener('click',()=>{
 	const bookservice = selectElement.options[selectElement.selectedIndex].text;
 	const bookdate = document.getElementById('bookdate').value;
 	const booktime = document.getElementById('booktime').value;
-
+	console.log(bookservice);
+	console.log(bookdate);
+	console.log(booktime);
 	fetch(('http://localhost:3000/book'),{
 		method : 'post',
 		headers:{'Content-Type': 'application/json'},
