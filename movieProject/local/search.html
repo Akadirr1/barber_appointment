@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>KOU FRONT END</title>
+	<!-- bootstrap sunucularından çektiğimiz css dosyası -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
+	<!-- bootstrap sunucularından çektiğimiz css dosyası -->
+	<!-- kendi yazdığımız css dosyası -->
+	<link rel="stylesheet" href="../style.css">
+	<!-- kendi yazdığımız css dosyası -->
+
+</head>
+
+<body>
+	<div class="container">
+		<!-- navbar başlangıç navbarda bootstrapten yararlandık-->
+		<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: black!important;">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/local">
+					<img src="../Kouyenilogo.png" alt="" width="40px">
+				</a> <!-- navbar logomuzu burda çağırdık-->
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item dropdown" style=" color: white!important;">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false" style=" color: white!important;">
+								Film turleri
+							</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Action</a></li>
+								<li><a class="dropdown-item" href="#">Another action</a></li>
+								<li><a class="dropdown-item" href="#">Something else here</a></li>
+							</ul>
+						</li><!-- dropdown olacak şekilde film türlerini listeleyeceğimiz bir yapı kullandık-->
+						<p class="d-inline-flex gap-1">
+							<!-- film yıllarını kullanıcının seçebileceği şekilde burda gösterdik fakat bunları js ile render ediyoruz daha rahat yönetmek ve tıklanıldığında eventlistenerlar ile o yılların sonuçlarını çekmek için.  -->
+							<a id="filmyillari" class="btn btn-link" data-bs-toggle="collapse" href="#collapseExample"
+								role="button" aria-expanded="false" aria-controls="collapseExample">
+								Film Yillari
+							</a>
+
+						</p>
+					</ul>
+					<form class="d-flex" role="search">
+						<!-- search bar ekledik burdaki inputu alıp apiden veri çekip ona göre kullanıcıya sonuçları göstermek için -->
+						<input id="search" class="form-control me-2" type="search" placeholder="Film arayın"
+							aria-label="Search" />
+						<button id="searchbtn" class="btn btn-dark" type="button">Ara</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+		<!-- navbar son -->
+		<div class="collapse" id="collapseExample">
+			<!-- render edeceğimiz yıllar navbarın altında gözükmesi için navın bir altında oluşturduk. -->
+			<div class="years-container">
+				<div id="year-buttons">
+				</div>
+			</div>
+		</div>
+		<div id="search-page">
+			<!-- kullanıcı bir arama yaptığında burada yine card yapısını kullanarak render ediyoruz js ile. -->
+			<div class="search-header">
+				<h2 style="color:white">Arama Sonuçları</h2>
+				<!--<button class="btn btn-outline-light" id="back-to-home">Ana Sayfaya Dön</button>-->
+			</div>
+			<div id="searchResults" class="search-results-container">
+				<!-- Arama sonuçları buraya yüklenecek -->
+			</div>
+		</div>
+	</div>
+	<!-- bootstrap sunucularından çektiğimiz js dosyaları -->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js"
+		integrity="sha384-RuyvpeZCxMJCqVUGFI0Do1mQrods/hhxYlcVfGPOfQtPJh0JCw12tUAZ/Mv10S7D"
+		crossorigin="anonymous"></script>
+	<!-- bootstrap sunucularından çektiğimiz js dosyaları -->
+	<!-- kendi yazdığımız js dosyası -->
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			const urlParams = new URLSearchParams(window.location.search);
+			const movieId = urlParams.get('search');
+
+			fetch(`http://127.0.0.1:5500/search?query=${movieId}`)
+				.then(res => res.json())
+				.then(data => {
+					console.log(data)
+					displaySearchResults(data);
+				})
+				.catch(error => {
+					console.error('Hata:', error)
+					document.getElementById("searchResults").innerHTML = '<div class="alert alert-danger">Arama sırasında bir hata oluştu!</div>';
+
+				});
+
+		})
+		function displaySearchResults(data) {
+			const resultsContainer = document.getElementById("searchResults") || document.createElement("div");
+			resultsContainer.id = "searchResults";
+			resultsContainer.innerHTML = ""; // Önceki sonuçları temizle
+
+			if (data.results && data.results.length > 0) {
+				data.results.forEach(movie => {
+					const movieCard = document.createElement("div");
+					movieCard.classList.add("movie-card");
+
+					movieCard.innerHTML = `
+                <img src="https://image.tmdb.org/t/p/w200${movie.poster_path || '/no-image.png'}" alt="${movie.title}">
+                <h3>${movie.title}</h3>
+                <p>Rating: ${movie.vote_average}/10</p>
+            `;
+					movieCard.addEventListener('click', function () {
+						selectMovie(movie.id);
+					});
+					resultsContainer.appendChild(movieCard);
+				});
+			} else {
+				resultsContainer.innerHTML = "<p>Arama sonucu bulunamadı</p>";
+			}
+
+			// Container'a ekle
+			//const container = document.querySelector(".container") || document.body;
+			//container.appendChild(resultsContainer);
+		}
+	</script>
+	<script src="index_local.js"></script>
+	<!-- kendi yazdığımız js dosyası -->
+</body>
+
+</html>

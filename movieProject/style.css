@@ -1,0 +1,328 @@
+body {
+	background-color: #0E0E0E;
+}
+
+#carouselExampleCaptions {
+	max-width: 35%;
+}
+
+/* caroselin genişliğini sınırlar çerçevesinde tutuyoruz bizim belirlediğim 35% değeri */
+
+#carouselExampleCaptions1 {
+	max-width: 35%;
+}
+
+/* caroselin genişliğini sınırlar çerçevesinde tutuyoruz bizim belirlediğim 35% değeri */
+
+#searchResults {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.card:hover {
+	.card-title {
+		display: none;
+	}
+
+	.card-img-overlay {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.card-text {
+		display: block;
+		font-size: 25px;
+		text-align: center;
+	}
+}
+
+/* card yapılarının üstüne geldiğimizde film isminin silinip puanların görünür hale gelmesini sağladık */
+#filmyillari {
+	text-decoration: none;
+	color: white;
+	/*navbarda butonun beyaz olmasını sağladık*/
+}
+
+#year-buttons button {
+	color: yellow;
+	text-decoration: none;
+}
+
+/*navbarda yıl butonlarının sarı olmasını sağladık*/
+
+/*  */
+.card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0);
+	/* Normal durumda saydam */
+	transition: background-color 0.5s ease;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.card:hover::before {
+	background-color: rgba(0, 0, 0, 0.5);
+	/* Hover durumunda koyulaştırma */
+}
+
+/* üstteki yapılarda cardların üstüne hover olduğunda hafif koyu renk olması için before olarak bunları ayarladık */
+.card-img-overlay,
+.card-title,
+.card-text {
+	z-index: 2;
+}
+
+.card-text {
+	display: none;
+}
+
+/* standar gözükmesin ve hover olduğunda görünür olmasını sağladık */
+
+.carousels {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+/* caroselleri yatayda hizaladık */
+.nav-link:focus,
+.dropdown-toggle:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+/* navbar butonlarındaki üstüne mause getirildiğinde outlinelerın gözükmesi kötü bir görüntü yarattığı için bunları none yaptık */
+
+.navbar-nav .nav-link.dropdown-toggle::after {
+	outline: none !important;
+}
+
+.popular .card {
+	max-width: 160px;
+	margin-left: 30px;
+	margin-top: 30px;
+}
+
+/* kartların boyutlarını ayarladık */
+
+.popular {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	max-width: 100%;
+}
+
+/* popülerleri yatayda satır satır göstermek için wrap özelliğini kullandık ve güzel bir görüntü ortaya çıkardık */
+
+.page {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+/* genel olarak yapılarımızın alt alta ve ortalanmış olması için direction column özelliğini kullandık */
+
+.container {
+	background-color: black;
+}
+
+/* arka planı black olarak ayarladık */
+
+/*.container1{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}*/
+
+
+/*dropdown efekti*/
+@media (min-width: 992px) {
+
+	/* Sadece büyük ekranlarda çalışsın */
+	.dropdown:hover>.dropdown-menu {
+		display: block;
+		animation: fadeIn 0.3s;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.dropend:hover>.dropdown-menu {
+		display: block;
+		top: 0;
+		left: 100%;
+	}
+}
+
+/* burada dropdownın üzerine mause geldiğinde kendiliğinden açılması adına hover anında display block olarak ayarladık ve tatlı bir açılış efekti olması için animasyon ekledik */
+
+
+.search-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	padding: 10px;
+	background-color: transparent;
+	border-radius: 5px;
+}
+
+.search-results-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+}
+
+.movie-card {
+	width: 45%;
+	margin-bottom: 20px;
+	background-color: #333;
+	border-radius: 8px;
+	overflow: hidden;
+	transition: transform 0.3s ease;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.movie-card:hover {
+	transform: translateY(-5px);
+}
+
+.movie-card img {
+	width: 100%;
+	height: auto;
+}
+
+.movie-card h3 {
+	font-size: 16px;
+	padding: 10px;
+	margin: 0;
+	color: white;
+}
+
+.movie-card p {
+	font-size: 14px;
+	padding: 0 10px 10px;
+	margin: 0;
+	color: #ccc;
+}
+
+/* Film detay sayfası için stiller */
+.movie-detail-container {
+	padding: 20px;
+	color: #fff;
+}
+
+.movie-detail-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	padding: 15px;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 8px;
+}
+
+.movie-detail-card {
+	display: flex;
+	gap: 30px;
+	background-color: rgba(30, 30, 30, 0.7);
+	border-radius: 10px;
+	overflow: hidden;
+	padding: 20px;
+}
+
+.movie-detail-poster {
+	flex: 0 0 300px;
+}
+
+.movie-detail-poster img {
+	width: 100%;
+	border-radius: 10px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.movie-detail-info {
+	flex: 1;
+}
+
+.movie-meta {
+	margin: 15px 0;
+	display: flex;
+	gap: 20px;
+}
+
+.movie-rating {
+	background-color: #ffd700;
+	color: #000;
+	font-weight: bold;
+	padding: 5px 10px;
+	border-radius: 5px;
+}
+
+.movie-genres {
+	margin: 15px 0;
+}
+
+.genre {
+	display: inline-block;
+	background-color: rgba(255, 255, 255, 0.1);
+	padding: 5px 10px;
+	margin: 0 5px 5px 0;
+	border-radius: 15px;
+	font-size: 14px;
+}
+
+.movie-overview {
+	margin: 20px 0;
+	line-height: 1.6;
+}
+
+.movie-additional {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive tasarım için */
+@media (max-width: 768px) {
+	.movie-detail-card {
+		flex-direction: column;
+	}
+
+	#carouselExampleCaptions {
+		display: none;
+	}
+
+	#carouselExampleCaptions1 {
+		max-width: 100%;
+	}
+
+	.movie-detail-poster {
+		flex: 0 0 auto;
+		margin-bottom: 20px;
+	}
+
+	.popular .card {
+		max-width: 45%;
+		margin-left: 1%;
+		margin-top: 10%;
+	}
+
+	/* kartların boyutlarını ayarladık */
+}
